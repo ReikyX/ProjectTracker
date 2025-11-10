@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ProjectTracker.Data;
+
 namespace ProjectTracker
 {
     public class Program
@@ -8,6 +11,19 @@ namespace ProjectTracker
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Session für Authentifizierung
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            // Memory Cache für Performance
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
 
@@ -22,6 +38,10 @@ namespace ProjectTracker
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            // Session aktivieren (WICHTIG: vor UseAuthorization!)
+            app.UseSession();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
