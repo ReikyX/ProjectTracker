@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace ProjectTracker.Migrations
 {
     /// <inheritdoc />
@@ -20,7 +18,7 @@ namespace ProjectTracker.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FistName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
@@ -98,26 +96,8 @@ namespace ProjectTracker.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Email", "FistName", "IsAdmin", "LastName", "Password" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@projektmanager.de", "", true, "", "$2a$11$xQH3V8Z3qX.7K9J8Y0C4ZeMzN7Y8x9LK7mVqF3P0QwI4Z8R3X7Y8e" },
-                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "test@projektmanager.de", "", false, "", "$2a$11$yQH3V8Z3qX.7K9J8Y0C4ZeMzN7Y8x9LK7mVqF3P0QwI4Z8R3X7Y8f" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Projects",
-                columns: new[] { "Id", "Description", "EndDate", "Name", "StartDate", "UserId" },
-                values: new object[] { 1, "Ein Beispielprojekt zum Testen der Anwendung", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Demo Projekt", new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc), 2 });
-
-            migrationBuilder.InsertData(
-                table: "ProjectTasks",
-                columns: new[] { "Id", "Description", "ProjectId", "Title" },
-                values: new object[,]
-                {
-                    { 1, "Dies ist eine Testaufgabe für das Demo-Projekt", 1, "Erste Aufgabe" },
-                    { 2, "Eine weitere Aufgabe zum Testen", 1, "Zweite Aufgabe" }
-                });
+                columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "IsAdmin", "LastName", "Password" },
+                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@projektmanager.de", "Admin", true, "User", "$2a$11$ATKZ24pUwEMy..3OlieHEuSZ8EQQbZ7AOFlmBETSsuIbKE34Ce3e2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserId",

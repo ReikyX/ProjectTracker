@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ProjectTracker.Data;
 
@@ -12,7 +13,7 @@ namespace ProjectTracker
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Session für Authentifizierung
             builder.Services.AddSession(options =>
@@ -24,6 +25,16 @@ namespace ProjectTracker
 
             // Memory Cache für Performance
             builder.Services.AddMemoryCache();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/Login";
+    });
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -47,7 +58,7 @@ namespace ProjectTracker
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

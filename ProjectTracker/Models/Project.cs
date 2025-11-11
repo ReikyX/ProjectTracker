@@ -10,7 +10,7 @@
 
         // Foreign key to User
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public AppUser User { get; set; } = null!;
 
         // Navigation Property to ProjectTasks
         public ICollection<ProjectTask> ProjectTasks { get; set; } = new List<ProjectTask>();

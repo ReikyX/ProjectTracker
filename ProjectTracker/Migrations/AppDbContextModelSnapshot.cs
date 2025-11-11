@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectTracker.Data;
 
@@ -11,12 +10,10 @@ using ProjectTracker.Data;
 
 namespace ProjectTracker.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251110094921_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(AppDbContext))]
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +21,53 @@ namespace ProjectTracker.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ProjectTracker.Models.AppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "admin@projektmanager.de",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "User",
+                            Password = "$2a$11$ATKZ24pUwEMy..3OlieHEuSZ8EQQbZ7AOFlmBETSsuIbKE34Ce3e2"
+                        });
+                });
 
             modelBuilder.Entity("ProjectTracker.Models.Project", b =>
                 {
@@ -55,17 +99,6 @@ namespace ProjectTracker.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Ein Beispielprojekt zum Testen der Anwendung",
-                            EndDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Demo Projekt",
-                            StartDate = new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("ProjectTracker.Models.ProjectTask", b =>
@@ -92,22 +125,6 @@ namespace ProjectTracker.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectTasks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Dies ist eine Testaufgabe für das Demo-Projekt",
-                            ProjectId = 1,
-                            Title = "Erste Aufgabe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Eine weitere Aufgabe zum Testen",
-                            ProjectId = 1,
-                            Title = "Zweite Aufgabe"
-                        });
                 });
 
             modelBuilder.Entity("ProjectTracker.Models.TimeEntry", b =>
@@ -134,66 +151,9 @@ namespace ProjectTracker.Migrations
                     b.ToTable("TimeEntries");
                 });
 
-            modelBuilder.Entity("ProjectTracker.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FistName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "admin@projektmanager.de",
-                            FistName = "",
-                            IsAdmin = true,
-                            LastName = "",
-                            Password = "$2a$11$xQH3V8Z3qX.7K9J8Y0C4ZeMzN7Y8x9LK7mVqF3P0QwI4Z8R3X7Y8e"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "test@projektmanager.de",
-                            FistName = "",
-                            IsAdmin = false,
-                            LastName = "",
-                            Password = "$2a$11$yQH3V8Z3qX.7K9J8Y0C4ZeMzN7Y8x9LK7mVqF3P0QwI4Z8R3X7Y8f"
-                        });
-                });
-
             modelBuilder.Entity("ProjectTracker.Models.Project", b =>
                 {
-                    b.HasOne("ProjectTracker.Models.User", "User")
+                    b.HasOne("ProjectTracker.Models.AppUser", "User")
                         .WithMany("Projects")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -224,6 +184,11 @@ namespace ProjectTracker.Migrations
                     b.Navigation("ProjectTask");
                 });
 
+            modelBuilder.Entity("ProjectTracker.Models.AppUser", b =>
+                {
+                    b.Navigation("Projects");
+                });
+
             modelBuilder.Entity("ProjectTracker.Models.Project", b =>
                 {
                     b.Navigation("ProjectTasks");
@@ -232,11 +197,6 @@ namespace ProjectTracker.Migrations
             modelBuilder.Entity("ProjectTracker.Models.ProjectTask", b =>
                 {
                     b.Navigation("TimeEntries");
-                });
-
-            modelBuilder.Entity("ProjectTracker.Models.User", b =>
-                {
-                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

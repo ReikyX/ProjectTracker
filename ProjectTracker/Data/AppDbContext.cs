@@ -4,14 +4,14 @@ using ProjectTracker.Models;
 
 namespace ProjectTracker.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
         
-        public DbSet<User> Users { get; set; }
+        public DbSet<AppUser> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<TimeEntry> TimeEntries { get; set; }
