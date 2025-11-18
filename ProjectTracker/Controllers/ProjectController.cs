@@ -72,5 +72,32 @@ namespace ProjectTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditProject(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+
+            return View(project);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProject(int id, Project project)
+        {
+            if (id != project.Id) return BadRequest();
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdString, out int userId))
+                return Unauthorized();
+            var existing = await _context.Projects
+        .FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId);
+
+            if (existing == null) return NotFound();
+
+            existing.Name = project.Name;
+            existing.Description = project.Description;
+            existing.StartDate = project.StartDate;
+            existing.EndDate = project.EndDate;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

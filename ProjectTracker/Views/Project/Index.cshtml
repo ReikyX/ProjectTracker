@@ -36,8 +36,8 @@ else
                         <td>@project.StartDate.ToShortDateString()</td>
                         <td>@(project.EndDate?.ToShortDateString() ?? "-")</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@project.Id">Bearbeiten</a>
-                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@project.Id">Löschen</a>
+                            <a class="btn btn-sm btn-primary" asp-action="EditProject" asp-route-id="@project.Id">Bearbeiten</a>
+                            <a class="btn btn-sm btn-danger" asp-action="DeleteProject" asp-route-id="@project.Id">Löschen</a>
                         </td>
                     </tr>
                 }
