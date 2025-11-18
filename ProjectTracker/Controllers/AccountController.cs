@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using BCrypt.Net;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -43,19 +41,20 @@ namespace ProjectTracker.Controllers
             }
 
             // ✅ Claims erstellen
-            var claims = new List<System.Security.Claims.Claim>
+            var claims = new List<Claim>
     {
-        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, user.Email),
-        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User"),
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
     };
 
-            var claimsIdentity = new System.Security.Claims.ClaimsIdentity(
+            var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             // ✅ Login-Cookie setzen
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new System.Security.Claims.ClaimsPrincipal(claimsIdentity),
+                new ClaimsPrincipal(claimsIdentity),
                 new AuthenticationProperties
                 {
                     IsPersistent = true, // bleibt auch nach Schließen des Browsers erhalten
