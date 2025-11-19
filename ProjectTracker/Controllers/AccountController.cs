@@ -17,12 +17,12 @@ namespace ProjectTracker.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         { return View(); }
 
         // ---------- Login ----------
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View();
         }

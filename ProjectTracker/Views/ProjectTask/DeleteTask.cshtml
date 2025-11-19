@@ -1,0 +1,13 @@
+﻿@model ProjectTask
+
+<h2 class="fw-bold mb-3">Aufgabe löschen</h2>
+
+<p>Möchtest du die Aufgabe <strong>@Model.Title</strong> wirklich löschen?</p>
+
+<form asp-action="DeleteConfirm" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">Löschen</button>
+    <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+</form>

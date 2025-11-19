@@ -1,0 +1,36 @@
+﻿@model CreateTask
+
+<div class="card p-4 shadow" style="max-width: 500px; margin: 0 auto;">
+    <h2 class="fw-bold mb-3">Neue Aufgabe erstellen</h2>
+
+    <form asp-action="CreateConfirm" method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Projekt</label>
+            <select asp-for="Task.ProjectId" class="form-control">
+                <option value="">-- Projekt auswählen --</option>
+
+                @foreach (var p in Model.Projects)
+                {
+                    <option value="@p.Id">@p.Name</option>
+                }
+            </select>
+            <span asp-validation-for="Task.ProjectId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Task.Title" class="form-label"></label>
+            <input asp-for="Task.Title" class="form-control" />
+            <span asp-validation-for="Task.Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Task.Description" class="form-label"></label>
+            <textarea asp-for="Task.Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+
+    </form>
+</div>

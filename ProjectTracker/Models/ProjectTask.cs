@@ -8,7 +8,7 @@
 
         // Foreign key to Project
         public int ProjectId { get; set; }
-        public Project Project { get; set; } = null!;
+        public Project? Project { get; set; } = null!;
 
         //Navigation Property to TimeEntries
         public ICollection<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();

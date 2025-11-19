@@ -37,7 +37,7 @@ namespace ProjectTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateProject()
+        public async Task<IActionResult> CreateProject()
         {
             return View();
         }
